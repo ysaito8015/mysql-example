@@ -1,0 +1,9 @@
+[mysqld]
+mysql_native_password=on
+authentication_policy=mysql_native_password
+# mysql_native_password plugin is disabled from mysql 8.4
+# and default_authentication_plugin is deleted
+# see https://blog.s-style.co.jp/2024/05/11793/
+# default_authentication_plugin=mysql_native_password
+character_set_server=utf8mb4
+sql_mode=TRADITIONAL,NO_AUTO_VALUE_ON_ZERO,ONLY_FULL_GROUP_BY

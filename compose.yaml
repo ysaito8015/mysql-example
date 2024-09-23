@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_started
+    environment:
+      APP_ENV: dev
+      PORT: 8080
+      APP_DB_HOST: db
+      APP_DB_PORT: 3306
+      APP_DB_USER: mysql 
+      APP_DB_PASSWORD: password
+      APP_DB_NAME: example
+    volumes:
+      - .:/app
+    ports:
+      - "28000:8080"
+    networks:
+      - example-network
+  db:
+    image: mysql:8.4.2
+    platform: linux/amd64
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: example
+    volumes:
+      - db-data:/var/lib/mysql
+      - ${PWD}/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
+    ports:
+      - "13306:3306"
+    networks:
+      - example-network
+volumes:
+  db-data:
+networks:
+  example-network:
+    driver: bridge
