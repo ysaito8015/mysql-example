@@ -4,31 +4,20 @@ import (
 	//"context"
 	"database/sql"
 	"testing"
-	"time"
+	//"time"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/ysaito8015/mysql-example/config"
 )
 
-func prepareDBConfigure() mysql.Config {
-	return mysql.Config{
-		DBName:               "example",
-		User:                 "mysql",
-		Passwd:               "password",
-		Addr:                 "127.0.0.1:13306",
-		Net:                  "tcp",
-		ParseTime:            true,
-		Collation:            "utf8mb4_unicode_ci",
-		Loc:                  time.Local,
-		AllowNativePasswords: true,
-	}
-}
 func TestGetRegisteredDriver(t *testing.T) {
 	assert.Equal(t, []string{"mysql"}, sql.Drivers())
 }
 
 func TestPingMySql(t *testing.T) {
-	c := prepareDBConfigure()
+	c := config.New()
 	db, err := sql.Open("mysql", c.FormatDSN())
 
 	assert.Nil(t, err)
@@ -41,7 +30,7 @@ func TestPingMySql(t *testing.T) {
 }
 
 func TestExecuteDDL(t *testing.T) {
-	c := prepareDBConfigure()
+	c := config.New()
 	db, err := sql.Open("mysql", c.FormatDSN())
 
 	assert.Nil(t, err)
